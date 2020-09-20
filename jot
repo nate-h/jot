@@ -1,0 +1,15 @@
+#!/bin/bash
+
+jot()
+{
+	cd $JOTS                           &&
+	FNAME=$1.md                        &&
+	echo "Editing $FNAME"              &&
+	touch $FNAME                       &&
+	git pull -q                        &&
+	$JOT_EDITOR $FNAME                 &&
+	git add $FNAME                     &&
+	git commit -m "updated $FNAME" -q  &&
+	git push origin master -q          &&
+	cd -
+}
