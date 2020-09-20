@@ -11,16 +11,16 @@ echo "Specified editor: $JOT_EDITOR"
 echo "JOT_EDITOR=$JOT_EDITOR" >> settings.cfg
 
 # Specify where to save the notes.
-DEF_REPO=git@github.com:nate-h/jot_notes.git
+DEF_REPO=git@github.com:nate-h/jots.git
 read -p "Your private notes editor repo [$DEF_REPO]: " repo
 NOTES_REPO=${repo:-$DEF_REPO}
 echo "Specified notes repo: $NOTES_REPO"
 echo "NOTES_REPO=$NOTES_REPO" >> settings.cfg
 
 # Initialize submodule.
-if [ ! -d "$DIR/jot_notes" ]; then
+if [ ! -d "$DIR/jots" ]; then
     echo "Initializing submodule..."
-    git clone $NOTES_REPO jot_notes
+    git clone $NOTES_REPO jots
 else
     echo "Submodule already exists. Not recreating."
 fi

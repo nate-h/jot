@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#function to keep track of documents
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+JOTS=$DIR/jots
+
+exit 0
+
+jot()
+{
+	echo editing $1                             &&
+	git -C $JOTS pull -q                        &&
+	vim $1                                      &&
+	git -C $JOTS add $1                         &&
+	git -C $JOTS commit -m "updated ${1}" -q    &&
+	git -C $JOTS push origin master -q
+}
