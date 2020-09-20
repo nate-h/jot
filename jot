@@ -1,15 +1,23 @@
 #!/bin/bash
 
-jot()
-{
-	cd $JOTS                           &&
-	FNAME=$1.md                        &&
-	echo "Editing $FNAME"              &&
-	touch $FNAME                       &&
-	git pull -q                        &&
-	$JOT_EDITOR $FNAME                 &&
-	git add $FNAME                     &&
-	git commit -m "updated $FNAME" -q  &&
-	git push origin master -q          &&
-	cd -
-}
+jot()(
+
+	# Cd to jot dir, pull any changes and potentially create a new md file.
+	set -e
+	cd $JOTS_DIR
+	FNAME=$1.md
+	touch $FNAME
+	git pull -q
+
+	# Open editor while checking if contents changed.
+	TEXT_COPY=$(cat $FNAME)
+	$JOT_EDITOR $FNAME
+	TEXT_COPY_AFTER=$(cat $FNAME)
+
+	# Push any changes.
+	if [ "$TEXT_COPY" != "$TEXT_COPY_AFTER" ]; then
+		git add $FNAME
+		git commit -m "updated $FNAME" -q
+		git push origin master -q
+	fi
+)
