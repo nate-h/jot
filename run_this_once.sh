@@ -10,7 +10,7 @@ echo "JOT_DIR=$JOT_DIR" >> $JOTRC
 
 # Get users favorite editor and write to settings cfg.
 read -p "Favorite terminal text editor [micro]: " editor
-JOT_EDITOR=${name:-micro}
+JOT_EDITOR=${editor:-micro}
 echo "Specified editor: $JOT_EDITOR"
 echo "JOT_EDITOR=$JOT_EDITOR" >> $JOTRC
 
