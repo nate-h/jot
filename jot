@@ -5,6 +5,35 @@ jot()(
 	# Cd to jot dir, pull any changes and potentially create a new md file.
 	set -e
 	cd $JOTS_DIR
+	POSITIONAL=()
+
+	# Parse arguments.
+	while [[ "$#" -gt 0 ]]; do
+		case $1 in
+			#-l|--list) list="$2"; shift ;;
+			-l|--list)
+				echo "List jots from oldest modified to newest"
+				echo "----------------------------------------\n"
+				ls -tr *.md | grep -v README ;
+				exit 0;;
+			-h|--help)
+				echo "Jots\n"
+				echo 'Use like "jot notes"'
+				echo ""
+				echo "Additional commands supported are:"
+				echo "-l|--list) List jots"
+				echo "-h|--help) View help"
+				exit 0;;
+			*)
+				POSITIONAL+=("$1")
+				shift
+				;;
+		esac
+	done
+
+	set -- "${POSITIONAL[@]}" # restore positional parameters
+
+
 	FNAME=$1.md
 	touch $FNAME
 	git pull -q
