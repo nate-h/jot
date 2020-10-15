@@ -55,3 +55,10 @@ jot()(
 		git push origin master -q
 	fi
 )
+
+get_jots()(
+	echo $(cd $JOTS_DIR && ls -tr *.md | grep -v README | sed -e 's/\.md$//')
+)
+
+# Tab complete jots.
+complete -C get_jots jot
