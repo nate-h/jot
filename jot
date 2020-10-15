@@ -12,9 +12,14 @@ jot()(
 		case $1 in
 			#-l|--list) list="$2"; shift ;;
 			-l|--list)
-				echo "List jots from oldest modified to newest"
-				echo "----------------------------------------\n"
-				ls -tr *.md | grep -v README ;
+				echo "List jots from oldest modified to newest with first line"
+				echo "--------------------------------------------------------\n"
+				for f in $(ls -tr *.md | grep -v README)
+				do
+					file_name=$(echo $f | sed -e 's/\.md$//')
+					first_line=$(head -n 1 $f)
+					printf "%-15s: %s\n" $file_name $first_line
+				done
 				exit 0;;
 			-h|--help)
 				echo "Jots\n"
