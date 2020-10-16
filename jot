@@ -36,6 +36,17 @@ jot()(
 				fi
 				exit 0;;
 
+			# View jot with style. Requires pygmentize.
+			-v|--view)
+				FNAME=$2.md
+				if [ -f $FNAME ]; then
+					pygmentize -O style=monokai -f console256 -g $FNAME | less
+				else
+					echo "File $FNAME is not a jot."
+					echo "Valid jots: $(get_jots)"
+				fi
+				exit 0;;
+
 			# Get help.
 			-h|--help)
 				echo "Jots\n"
@@ -44,6 +55,7 @@ jot()(
 				echo "Additional commands supported are:"
 				echo "-l|--list) List jots"
 				echo "-d|--delete) Delete a jot"
+				echo "-v|--view) View a jot using pygmentize and less"
 				echo "-h|--help) View help"
 				exit 0;;
 			*)
