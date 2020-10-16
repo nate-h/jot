@@ -10,7 +10,8 @@ jot()(
 	# Parse arguments.
 	while [[ "$#" -gt 0 ]]; do
 		case $1 in
-			#-l|--list) list="$2"; shift ;;
+
+			# List jots.
 			-l|--list)
 				echo "List jots from oldest modified to newest with first line"
 				echo "--------------------------------------------------------\n"
@@ -21,12 +22,28 @@ jot()(
 					printf "%-15s: %s\n" $file_name $first_line
 				done
 				exit 0;;
+
+			# Delete jot.
+			-d|--delete)
+				FNAME=$2.md
+				if [ -f $FNAME ]; then
+					git rm $FNAME -q
+					git commit -m "Remove $FNAME" -q
+					git push origin master -q
+				else
+					echo "File $FNAME is not a jot."
+					echo "Valid jots: $(get_jots)"
+				fi
+				exit 0;;
+
+			# Get help.
 			-h|--help)
 				echo "Jots\n"
 				echo 'Use like "jot notes"'
 				echo ""
 				echo "Additional commands supported are:"
 				echo "-l|--list) List jots"
+				echo "-d|--delete) Delete a jot"
 				echo "-h|--help) View help"
 				exit 0;;
 			*)
@@ -51,7 +68,7 @@ jot()(
 	# Push any changes.
 	if [ "$TEXT_COPY" != "$TEXT_COPY_AFTER" ]; then
 		git add $FNAME
-		git commit -m "updated $FNAME" -q
+		git commit -m "Updated $FNAME" -q
 		git push origin master -q
 	fi
 )
